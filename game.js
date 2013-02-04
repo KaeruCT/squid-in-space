@@ -5,7 +5,7 @@ var Game = (function (Crafty) {
         stardecay: 1/25,
         stargrowth: 1/25,
         starcycle: 25,
-        stargroupsize: 150,
+        stargroupsize: 70,
         stargroupcount: 0,
         maxstargroups: 2,
         curstargroup: 1,
@@ -85,7 +85,8 @@ var Game = (function (Crafty) {
             g.player = Crafty.e('Player').
             attr({
                 x: 0,
-                y: 0
+                y: 0,
+                z: 9999
             });
 
             g.generateStars();
