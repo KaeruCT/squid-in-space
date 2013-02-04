@@ -57,8 +57,7 @@
                 }).
                 color(self.color());
             };
-            self.trail = function () {
-                var rad = Crafty.math.degToRad(self.rotation);
+            self.trail = function (rad) {
                 Crafty.e('Trail').attr({
                     x: Math.ceil(self.x + self.w/2)-2,
                     y: Math.ceil(self.y + self.h/2)-2,
@@ -99,7 +98,19 @@
                     rad = Crafty.math.degToRad(-self.rotation);
                     self.accelerate(0.01, rad);
 
-                    self.trail();
+                    self.trail(rad);
+                }
+
+                if (self.isKeyPressed(k.Q)) {
+                    rad = Crafty.math.degToRad(self.rotation + 90);
+                    self.accelerate(0.01, rad);
+                    self.trail(rad);
+                }
+
+                if (self.isKeyPressed(k.E)) {
+                    rad = Crafty.math.degToRad(self.rotation - 90);
+                    self.accelerate(0.01, rad);
+                    self.trail(rad);
                 }
 
                 if (self.isKeyPressed(k.DOWN_ARROW)  || self.isKeyPressed(k.S)) {
