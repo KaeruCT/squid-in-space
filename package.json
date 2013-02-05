@@ -1,9 +1,9 @@
 {
   "name": "squid-in-space",
-  "version": "0.1",
+  "version": "0.1.0",
   "scripts": {
-  "start": "node app.js"
-},
+    "start": "node app.js"
+  },
   "dependencies": {
     "express": "*",
     "socket.io": "*"

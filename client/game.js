@@ -2,6 +2,7 @@ var Game = (function (Crafty, Net) {
     var g = {
         player: null,
         playerId: 0,
+        removedPlayers: [],
         defaultstarlifecycle: 1/25,
         stardecay: 1/25,
         stargrowth: 1/25,
@@ -99,9 +100,7 @@ var Game = (function (Crafty, Net) {
         },
 
         addPlayer: function (playerData) {
-            var existing = Crafty('Player'+playerData.id).length;
-
-            if (existing) {
+            if (Crafty('Player'+playerData.id).length) {
                 return;
             }
 
@@ -115,10 +114,14 @@ var Game = (function (Crafty, Net) {
 
         removePlayer: function (id) {
             Crafty('Player'+id).destroy();
+            g.removedPlayers.push(id);
         },
 
         updatePlayer: function (playerData) {
-            if (playerData.id === g.playerId) {
+            // exit if player is the same as current client
+            // or if the player was already removed
+            if (playerData.id === g.playerId ||
+                g.removedPlayers.indexOf(playerData.id) > -1) {
                 return;
             }
 
@@ -132,10 +135,14 @@ var Game = (function (Crafty, Net) {
         },
 
         _updatePlayer: function (p, playerData) {
+            // shit interpolation for now
+            var r = p.rotation + (playerData.rotation - p.rotation)/2;
+            var x = p.x + (playerData.x - p.x)/2;
+            var y = p.y + (playerData.y - p.y)/2;
             p.attr({
                 x: playerData.x,
                 y: playerData.y,
-                rotation: playerData.rotation,
+                rotation: r,
                 keysPressed: playerData.keysPressed
             });
         }
@@ -144,7 +151,7 @@ var Game = (function (Crafty, Net) {
     return {
         init: function () {
             Crafty.init();
-            Crafty.viewport.init(800, 600);
+            Crafty.viewport.init(640, 480);
             Crafty.viewport.clampToEntities = false;
 
             Crafty.background('#000000');

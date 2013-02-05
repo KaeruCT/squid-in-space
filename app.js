@@ -49,10 +49,10 @@ server.listen(5555);
 app.use('/', express.static(__dirname + '/client'));
 
 io.sockets.on('connection', function (socket) {
-
-    socket.on('connect', function () {
-
-    });
+    var updateInterval = setInterval(function () {
+        socket.volatile.emit('ClientUpdates', {
+            clientList: publicClientList
+        }), 100});
 
     socket.on('disconnect', function (data) {
         socket.get('clientId', function (err, clientId) {
@@ -60,6 +60,7 @@ io.sockets.on('connection', function (socket) {
                 id: clientId,
             });
         });
+        clearInterval(updateInterval);
     });
 
     socket.on('Join', function () {
@@ -85,17 +86,13 @@ io.sockets.on('connection', function (socket) {
         updateClientKey(data.clientId, data.value, false);
     });
 
-    socket.on('Ping', function (data) {
+    socket.on('ClientUpdate', function (data) {
         var client = getClient(data.clientId);
 
         if (client) {
             client.x = data.x;
             client.y = data.y;
             client.rotation = data.rotation;
-
-            socket.emit('Pong', {
-                clientList: publicClientList
-            });
         }
     });
 });

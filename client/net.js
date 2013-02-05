@@ -9,7 +9,13 @@ var Net = (function () {
         clientId = data.client.id;
         game.initPlayer(data.client);
 
-        emit('Ping', {x: 0, y: 0});
+        setInterval(function () {
+            emit('ClientUpdate', {
+                x: player.x,
+                y: player.y,
+                rotation: player.rotation
+            });
+        }, 100);
     },
 
     clientJoined = function (data) {
@@ -20,14 +26,8 @@ var Net = (function () {
         game.removePlayer(data.id);
     },
 
-    ping = function (data) {
+    clientUpdates = function (data) {
         processClientList(data);
-
-        emit('Ping', {
-            x: player.x,
-            y: player.y,
-            rotation: player.rotation
-        });
     },
 
     emit = function (event, data) {
@@ -61,7 +61,7 @@ var Net = (function () {
             socket.on('Connected', connected);
             socket.on('ClientJoined', clientJoined);
             socket.on('ClientLeft', clientLeft);
-            socket.on('Pong', ping);
+            socket.on('ClientUpdates', clientUpdates);
 
             emit('Join');
         },

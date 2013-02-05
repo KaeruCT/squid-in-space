@@ -76,6 +76,7 @@
                 color(self.color());
             };
             self.trail = function (rad) {
+                return;
                 Crafty.e('Trail').attr({
                     x: Math.ceil(self.x + self.w/2)-2,
                     y: Math.ceil(self.y + self.h/2)-2,
