@@ -105,16 +105,12 @@ var Game = (function (Crafty, Net) {
                 return;
             }
 
-            Crafty.e('Player').
+            var p = Crafty.e('Player').
             addComponent('Player'+playerData.id).
             color(playerData.ship).
-            attr({
-                x: playerData.x,
-                y: playerData.y,
-                keysPressed: playerData.keysPressed,
-                rotation: playerData.rotation,
-                trailcolor: playerData.trail
-            });
+            attr({trailcolor: playerData.trail});
+
+            g._updatePlayer(p, playerData);
         },
 
         removePlayer: function (id) {
@@ -129,14 +125,13 @@ var Game = (function (Crafty, Net) {
             var p = Crafty('Player'+playerData.id);
 
             if (!p.length) {
-                p = Crafty.e('Player').
-                addComponent('Player'+playerData.id).
-                color(playerData.ship).
-                attr({
-                    trailcolor: playerData.trail
-                })
+                g.addPlayer(playerData);
+            } else {
+                g._updatePlayer(p, playerData);
             }
+        },
 
+        _updatePlayer: function (p, playerData) {
             p.attr({
                 x: playerData.x,
                 y: playerData.y,

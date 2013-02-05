@@ -57,7 +57,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', function (data) {
         socket.get('clientId', function (err, clientId) {
             socket.broadcast.emit('ClientLeft', {
-                clientId: clientId,
+                id: clientId,
             });
         });
     });

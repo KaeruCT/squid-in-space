@@ -17,7 +17,7 @@ var Net = (function () {
     },
 
     clientLeft = function (data) {
-        game.removePlayer(data.clientId);
+        game.removePlayer(data.id);
     },
 
     ping = function (data) {
