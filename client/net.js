@@ -6,8 +6,8 @@ var Net = (function () {
     game = null,
 
     connected = function (data) {
-        clientId = data.clientId;
-        game.initPlayer(clientId);
+        clientId = data.client.id;
+        game.initPlayer(data.client);
 
         emit('Ping', {x: 0, y: 0});
     },
@@ -25,7 +25,8 @@ var Net = (function () {
 
         emit('Ping', {
             x: player.x,
-            y: player.y
+            y: player.y,
+            rotation: player.rotation
         });
     },
 

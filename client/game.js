@@ -6,7 +6,7 @@ var Game = (function (Crafty, Net) {
         stardecay: 1/25,
         stargrowth: 1/25,
         starcycle: 25,
-        stargroupsize: 70,
+        stargroupsize: 50,
         stargroupcount: 0,
         maxstargroups: 2,
         curstargroup: 1,
@@ -90,9 +90,12 @@ var Game = (function (Crafty, Net) {
             }
         },
 
-        initPlayer: function (id) {
-            Crafty('Player').addComponent('Player'+id);
-            g.playerId = id;
+        initPlayer: function (clientData) {
+            g.player.addComponent('Player'+clientData.id).
+            attr({trailcolor: clientData.trail}).
+            color(clientData.ship);
+
+            g.playerId = clientData.id;
         },
 
         addPlayer: function (playerData) {
@@ -104,10 +107,13 @@ var Game = (function (Crafty, Net) {
 
             Crafty.e('Player').
             addComponent('Player'+playerData.id).
+            color(playerData.ship).
             attr({
                 x: playerData.x,
                 y: playerData.y,
-                keysPressed: playerData.keysPressed
+                keysPressed: playerData.keysPressed,
+                rotation: playerData.rotation,
+                trailcolor: playerData.trail
             });
         },
 
@@ -124,12 +130,17 @@ var Game = (function (Crafty, Net) {
 
             if (!p.length) {
                 p = Crafty.e('Player').
-                addComponent('Player'+playerData.id);
+                addComponent('Player'+playerData.id).
+                color(playerData.ship).
+                attr({
+                    trailcolor: playerData.trail
+                })
             }
 
             p.attr({
                 x: playerData.x,
                 y: playerData.y,
+                rotation: playerData.rotation,
                 keysPressed: playerData.keysPressed
             });
         }
@@ -138,7 +149,7 @@ var Game = (function (Crafty, Net) {
     return {
         init: function () {
             Crafty.init();
-            Crafty.viewport.init(600, 400);
+            Crafty.viewport.init(800, 600);
             Crafty.viewport.clampToEntities = false;
 
             Crafty.background('#000000');

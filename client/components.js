@@ -27,11 +27,11 @@
             self._speed = 0;
             self._cos = 0;
             self._sin = 1;
-            self._trailcolor = "#CC7733";
             self.attr({
                 w: 16,
                 h: 8,
                 rotation: -90,
+                z: 9999,
                 keysPressed: {}
             });
 
@@ -86,13 +86,14 @@
                         Math.cos(-rad),
                         Math.sin(rad)
                     ),
+                    trailcolor: "#FFFFFF",
                     rotation: self.rotation
                 }).
-                color(self._trailcolor);
+                color(self.trailcolor);
             };
 
             self.origin('middle center');
-            self.color('#3388FF');
+            self.color('#FFFFFF');
 
             self.bind('EnterFrame', function (e) {
                 var k = Crafty.keys,
