@@ -1,0 +1,14 @@
+---
+applications:
+  .:
+    name: squid-in-space
+    framework:
+      name: node
+      info:
+        mem: 64M
+        description: Node.js Application
+        exec: 
+    infra: rs
+    url: ${name}.${target-base}
+    mem: 512M
+    instances: 1
