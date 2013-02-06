@@ -7,17 +7,19 @@ var express = require('express'),
 
     colors = [
         {ship: "#8833FF", trail: "#77CC33"},
-        {ship: "#88FF33", trail: "#CC3377"},
+        {ship: "#88FF33", trail: "#7733CC"},
         {ship: "#FF3388", trail: "#33CC77"},
-        {ship: "#3388FF", trail: "#CC7733"}
+        {ship: "#FF8833", trail: "#3377CC"},
+        {ship: "#3388FF", trail: "#CC7733"},
+        {ship: "#33FF88", trail: "#CC3377"}
     ],
 
     clientList = {},
-    publicClientList = [],
 
     initClient = function () {
         var clientId = Date.now(),
-            color = colors[publicClientList.length%colors.length],
+            l = Object.getOwnPropertyNames(clientList).length,
+            color = colors[l%colors.length],
             newClient = {
                 id: clientId,
                 x: 0,
@@ -29,9 +31,13 @@ var express = require('express'),
             };
 
         clientList[clientId] = newClient;
-        publicClientList.push(newClient);
 
         return clientId;
+    },
+
+    removeClient = function (clientId) {
+        var i = 0;
+        delete clientList[clientId];
     },
 
     getClient = function (clientId) {
@@ -45,13 +51,13 @@ var express = require('express'),
         }
     };
 
-server.listen(5555);
+server.listen(80);
 app.use('/', express.static(__dirname + '/client'));
 
 io.sockets.on('connection', function (socket) {
     var updateInterval = setInterval(function () {
         socket.volatile.emit('ClientUpdates', {
-            clientList: publicClientList
+            clientList: clientList
         }), 100});
 
     socket.on('disconnect', function (data) {
@@ -59,6 +65,7 @@ io.sockets.on('connection', function (socket) {
             socket.broadcast.emit('ClientLeft', {
                 id: clientId,
             });
+            removeClient(clientId);
         });
         clearInterval(updateInterval);
     });

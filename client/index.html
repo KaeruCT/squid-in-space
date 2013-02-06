@@ -15,26 +15,48 @@
             width: 100%;
         }
         #wrapper {
-            display: table;
             position: absolute;
             height: 100%;
             width: 100%
         }
         #content {
-            display: table-cell;
-            vertical-align: middle;
             text-align: center;
             font-family: "FreeMono", "Monospace", "Courier", monospace;
             color: #555;
             font-weight: bold;
             font-size: 32px;
+            margin: 0 auto;
+            width: 1000px;
+        }
+        #stage-container {
+            text-align: center;
+            float: left;
+
         }
         #cr-stage {
             margin: 0 auto;
             border: #333 1px dashed;
         }
+        #player-list {
+            width: 120px;
+            text-align: left;
+            float: left;
+            line-height: 20px;
+            font-size: 12px;
+            color: #777;
+            padding: 4px;
+        }
+        .avatar {
+            display: inline-block;
+            height: 8px;
+            width: 8px;
+        }
+        .player {
+            display: block;
+            width: 100%;
+        }
     </style>
-    <script>
+ <script>
     window.onload = function() {
         Game.init();
     };
@@ -43,8 +65,11 @@
 <body>
     <div id="wrapper">
         <div id="content">
-            <div id="cr-stage"></div>
-            w a s d q e space
+            <div id="player-list"></div>
+            <div id="stage-container">
+                <div id="cr-stage"></div>
+                w a s d q e space
+            </div>
         </div>
     </div>
 </body>

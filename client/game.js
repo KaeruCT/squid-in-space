@@ -91,6 +91,22 @@ var Game = (function (Crafty, Net) {
             }
         },
 
+        updatePlayerList: function (data) {
+            var i,
+                p,
+                html = '';
+
+            for(i in data) {
+                p = data[i];
+                html += '<div class="player">' +
+                    '<span class="avatar" style="background: '+p.ship+';"></span>' +
+                    '&nbsp;['+p.x.toFixed(0)+' '+p.y.toFixed(0)+']' +
+                    '</div>';
+            }
+
+            document.getElementById('player-list').innerHTML = html;
+        },
+
         initPlayer: function (clientData) {
             g.player.addComponent('Player'+clientData.id).
             attr({trailcolor: clientData.trail}).

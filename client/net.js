@@ -45,11 +45,13 @@ var Net = (function () {
     },
 
     processClientList = function (data) {
-        var i,
+        var c,
             cl = data.clientList;
 
-        for (i = 0; i < cl.length; i+= 1) {
-            game.updatePlayer(cl[i]);
+        game.updatePlayerList(cl);
+
+        for (c in cl) {
+            game.updatePlayer(cl[c]);
         }
     }
 
