@@ -27,7 +27,7 @@ var express = require('express'),
                 y: 0,
                 ship: color.ship,
                 trail: color.trail,
-                name: playerName.subtr(0, 16),
+                name: playerName.substring(0, 16),
                 rotation: 0,
                 keysPressed: {}
             };
