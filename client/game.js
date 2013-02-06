@@ -101,7 +101,7 @@ var Game = (function (Crafty, Net) {
                 p = data[i];
                 html += '<div class="player">' +
                     '<span class="avatar" style="background: '+p.ship+';"></span>' +
-                    '&nbsp;'+p.name+'&nbsp;['+p.x.toFixed(0)+' '+p.y.toFixed(0)+']' +
+                    '&nbsp;'+p.name.htmlEntities()+'&nbsp;['+p.x.toFixed(0)+' '+p.y.toFixed(0)+']' +
                     '</div>';
             }
 

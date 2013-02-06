@@ -85,6 +85,10 @@
             return document.getElementById(id);
         };
 
+        String.prototype.htmlEntities = function() { // hacky for now
+            return this.valueOf().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
         d('start-game').addEventListener('submit', function (e) {
             e.preventDefault();
             d('player-name').style.display = 'none';
@@ -101,7 +105,7 @@
         <div id="content">
 
             <form id="start-game">
-                <input id="player-name" type="text" placeholder="Enter your name">
+                <input id="player-name" maxlength="16" type="text" placeholder="Enter your name">
             </form>
 
             <div id="game">

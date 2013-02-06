@@ -121,13 +121,13 @@
                     self.trail(rad);
                 }
 
-                if (self.isKeyPressed(k.Q)) {
+                if (self.isKeyPressed(k.E)) {
                     rad = Crafty.math.degToRad(self.rotation + 90);
                     self.accelerate(0.01, rad);
                     self.trail(rad);
                 }
 
-                if (self.isKeyPressed(k.E)) {
+                if (self.isKeyPressed(k.Q)) {
                     rad = Crafty.math.degToRad(self.rotation - 90);
                     self.accelerate(0.01, rad);
                     self.trail(rad);
