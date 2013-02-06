@@ -23,7 +23,7 @@
             self.addComponent('2D, Canvas, Color, KeyBoard');
 
             self._vel = new Crafty.math.Vector2D(0, 0);
-            self._maxspeed = 4;
+            self._maxspeed = 2;
             self._speed = 0;
             self._cos = 0;
             self._sin = 1;
@@ -32,7 +32,8 @@
                 h: 8,
                 rotation: -90,
                 z: 9999,
-                keysPressed: {}
+                keysPressed: {},
+                name: ''
             });
 
             self.isKeyPressed = function (keyCode) {
@@ -76,7 +77,7 @@
                 color(self.color());
             };
             self.trail = function (rad) {
-                return;
+
                 Crafty.e('Trail').attr({
                     x: Math.ceil(self.x + self.w/2)-2,
                     y: Math.ceil(self.y + self.h/2)-2,

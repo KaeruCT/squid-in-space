@@ -1,13 +1,14 @@
 var Game = (function (Crafty, Net) {
     var g = {
         player: null,
+        playerName: null,
         playerId: 0,
         removedPlayers: [],
         defaultstarlifecycle: 1/25,
         stardecay: 1/25,
         stargrowth: 1/25,
         starcycle: 25,
-        stargroupsize: 50,
+        stargroupsize: 25,
         stargroupcount: 0,
         maxstargroups: 2,
         curstargroup: 1,
@@ -100,16 +101,30 @@ var Game = (function (Crafty, Net) {
                 p = data[i];
                 html += '<div class="player">' +
                     '<span class="avatar" style="background: '+p.ship+';"></span>' +
-                    '&nbsp;['+p.x.toFixed(0)+' '+p.y.toFixed(0)+']' +
+                    '&nbsp;'+p.name+'&nbsp;['+p.x.toFixed(0)+' '+p.y.toFixed(0)+']' +
                     '</div>';
+            }
+
+            if (!html) {
+                html = '<span class="error">Disconnected!</span>';
             }
 
             document.getElementById('player-list').innerHTML = html;
         },
 
+        displayError: function (data) {
+            var html = '<span class="error">Disconnected!</span>';
+            document.getElementById('player-list').innerHTML = html;
+            console.log(data);
+        },
+
+        // inits the current player
         initPlayer: function (clientData) {
             g.player.addComponent('Player'+clientData.id).
-            attr({trailcolor: clientData.trail}).
+            attr({
+                trailcolor: clientData.trail,
+                name: clientData.name
+            }).
             color(clientData.ship);
 
             g.playerId = clientData.id;
@@ -156,21 +171,24 @@ var Game = (function (Crafty, Net) {
             var x = p.x + (playerData.x - p.x)/2;
             var y = p.y + (playerData.y - p.y)/2;
             p.attr({
-                x: playerData.x,
-                y: playerData.y,
+                x: x,
+                y: y,
                 rotation: r,
+                name: playerData.name,
                 keysPressed: playerData.keysPressed
             });
         }
     };
 
     return {
-        init: function () {
+        init: function (playerName) {
             Crafty.init();
             Crafty.viewport.init(640, 480);
             Crafty.viewport.clampToEntities = false;
 
             Crafty.background('#000000');
+
+            g.playerName = playerName;
 
             g.player = Crafty.e('ControllablePlayer').
             attr({
@@ -192,7 +210,7 @@ var Game = (function (Crafty, Net) {
 
             Crafty.bind('EnterFrame', g.checkStarCycle);
 
-            Net.init('', g);
+            Net.init('', g, g.playerName);
         }
     };
 }(Crafty, Net));

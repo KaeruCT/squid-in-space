@@ -5,6 +5,12 @@ var Net = (function () {
     player = null,
     game = null,
 
+    join = function () {
+        emit('Join', {
+            playerName: game.playerName
+        });
+    },
+
     connected = function (data) {
         clientId = data.client.id;
         game.initPlayer(data.client);
@@ -16,6 +22,10 @@ var Net = (function () {
                 rotation: player.rotation
             });
         }, 100);
+    },
+
+    error = function (data) {
+        game.displayError(data);
     },
 
     clientJoined = function (data) {
@@ -64,8 +74,9 @@ var Net = (function () {
             socket.on('ClientJoined', clientJoined);
             socket.on('ClientLeft', clientLeft);
             socket.on('ClientUpdates', clientUpdates);
+            socket.on('error', error);
 
-            emit('Join');
+            join();
         },
 
         send: function (event, data) {

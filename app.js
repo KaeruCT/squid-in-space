@@ -13,12 +13,12 @@ var express = require('express'),
         {ship: "#FF3388", trail: "#33CC77"},
         {ship: "#FF8833", trail: "#3377CC"},
         {ship: "#3388FF", trail: "#CC7733"},
-        {ship: "#33FF88", trail: "#CC3377"}
+        {ship: "#FFFF33", trail: "#CC3377"}
     ],
 
     clientList = {},
 
-    initClient = function () {
+    initClient = function (playerName) {
         var clientId = Date.now(),
             color = colors[(colorCount+=1)%colors.length],
             newClient = {
@@ -27,6 +27,7 @@ var express = require('express'),
                 y: 0,
                 ship: color.ship,
                 trail: color.trail,
+                name: playerName,
                 rotation: 0,
                 keysPressed: {}
             };
@@ -71,8 +72,8 @@ io.sockets.on('connection', function (socket) {
         clearInterval(updateInterval);
     });
 
-    socket.on('Join', function () {
-        var clientId = initClient();
+    socket.on('Join', function (data) {
+        var clientId = initClient(data.playerName);
         socket.set('clientId', clientId, function () {
             var newClient = getClient(clientId);
 
