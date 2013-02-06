@@ -5,6 +5,8 @@ var express = require('express'),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
 
+    colorCount = 0,
+
     colors = [
         {ship: "#8833FF", trail: "#77CC33"},
         {ship: "#88FF33", trail: "#7733CC"},
@@ -18,8 +20,7 @@ var express = require('express'),
 
     initClient = function () {
         var clientId = Date.now(),
-            l = Object.getOwnPropertyNames(clientList).length,
-            color = colors[l%colors.length],
+            color = colors[(colorCount+=1)%colors.length],
             newClient = {
                 id: clientId,
                 x: 0,
