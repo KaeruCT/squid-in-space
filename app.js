@@ -53,7 +53,7 @@ var express = require('express'),
         }
     };
 
-server.listen(80);
+server.listen(parseInt(process.argv[2], 10) || 80);
 app.use('/', express.static(__dirname + '/client'));
 
 io.sockets.on('connection', function (socket) {

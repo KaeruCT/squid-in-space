@@ -1,6 +1,6 @@
 {
   "name": "squid-in-space",
-  "version": "0.1.0-3",
+  "version": "0.1.0-5",
   "scripts": {
     "start": "node app.js"
   },
