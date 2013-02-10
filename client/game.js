@@ -168,9 +168,10 @@ define(["crafty", "net", "socket.io",
 
         _updatePlayer: function (p, playerData) {
             // shit interpolation for now
-            var r = p.rotation + (playerData.rotation - p.rotation)/2;
-            var x = p.x + (playerData.x - p.x)/2;
-            var y = p.y + (playerData.y - p.y)/2;
+            var r = p.rotation + (playerData.rotation - p.rotation)/2,
+                p.x + (playerData.x - p.x)/2,
+                p.y + (playerData.y - p.y)/2;
+
             p.attr({
                 x: x,
                 y: y,

@@ -4,6 +4,7 @@ define(["socket.io"], function (io) {
     socket = null,
     player = null,
     game = null,
+    updateInterval = null,
 
     join = function () {
         emit('Join', {
@@ -15,7 +16,7 @@ define(["socket.io"], function (io) {
         clientId = data.client.id;
         game.initPlayer(data.client);
 
-        setInterval(function () {
+        updateInterval = setInterval(function () {
             emit('ClientUpdate', {
                 x: player.x,
                 y: player.y,
@@ -26,6 +27,7 @@ define(["socket.io"], function (io) {
 
     error = function (data) {
         game.displayError(data);
+        clearInterval(updateInterval);
     },
 
     clientJoined = function (data) {
