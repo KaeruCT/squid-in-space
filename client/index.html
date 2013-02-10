@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="net.js"></script>
-    <script type="text/javascript" src="crafty.js"></script>
-    <script type="text/javascript" src="components.js"></script>
-    <script type="text/javascript" src="game.js"></script>
+    <script data-main="main.js" src="lib/require.js"></script>
     <title>Squid in Space</title>
     <style type="text/css">
         body, html {
@@ -91,27 +87,6 @@
             display: none;
         }
     </style>
- <script>
-    window.onload = function() {
-        var d = function (id) {
-            return document.getElementById(id);
-        };
-
-        String.prototype.htmlEntities = function() { // hacky for now
-            return this.valueOf().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
-
-        d('start-game').addEventListener('submit', function (e) {
-            e.preventDefault();
-            d('player-name').style.display = 'none';
-            d('game').style.display = 'block';
-
-            Game.init(document.getElementById('player-name').value);
-        });
-
-        d('player-name').focus();
-    };
-    </script>
 </head>
 <body>
     <div id="wrapper">

@@ -1,4 +1,5 @@
-var Game = (function (Crafty, Net) {
+define(["crafty", "net", "socket.io",
+        "components/player", "components/particle"], function (Crafty, Net, io) {
     var g = {
         player: null,
         playerName: null,
@@ -12,7 +13,7 @@ var Game = (function (Crafty, Net) {
         stargroupcount: 0,
         maxstargroups: 2,
         curstargroup: 1,
-        v: Crafty.viewport,
+        v: null,
         starsready: false,
 
         randx: function () {
@@ -188,6 +189,8 @@ var Game = (function (Crafty, Net) {
 
             Crafty.background('#000000');
 
+            g.v = Crafty.viewport;
+
             g.playerName = playerName;
 
             g.player = Crafty.e('ControllablePlayer').
@@ -213,4 +216,4 @@ var Game = (function (Crafty, Net) {
             Net.init('', g, g.playerName);
         }
     };
-}(Crafty, Net));
+});

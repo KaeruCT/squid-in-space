@@ -1,4 +1,4 @@
-var Net = (function () {
+define(["socket.io"], function (io) {
     var
     clientId = null,
     socket = null,
@@ -83,4 +83,4 @@ var Net = (function () {
             emit(event, data);
         }
     };
-}());
+});
