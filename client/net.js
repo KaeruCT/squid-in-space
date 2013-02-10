@@ -20,6 +20,7 @@ define(["socket.io"], function (io) {
             emit('ClientUpdate', {
                 x: player.x,
                 y: player.y,
+                health: player.health,
                 rotation: player.rotation
             });
         }, 100);
@@ -36,6 +37,10 @@ define(["socket.io"], function (io) {
 
     clientLeft = function (data) {
         game.removePlayer(data.id);
+    },
+
+    clientDied = function (data) {
+        game.killPlayer(data.id);
     },
 
     clientUpdates = function (data) {
@@ -76,6 +81,7 @@ define(["socket.io"], function (io) {
             socket.on('ClientJoined', clientJoined);
             socket.on('ClientLeft', clientLeft);
             socket.on('ClientUpdates', clientUpdates);
+            socket.on('ClientDied', clientDied);
             socket.on('error', error);
 
             join();

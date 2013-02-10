@@ -49,9 +49,19 @@ define(["crafty"], function (Crafty) {
         init: function () {
             var self = this;
 
-            self.addComponent('MovingParticle');
+            self.addComponent('MovingParticle, Collision');
+
+            self.onHit('Player', function(ent) {
+                var target = ent[0].obj;
+
+                if (target !== self.player) {
+                    target.damage(1);
+                    self.destroy();
+                }
+            });
 
             self.attr({
+                player: null,
                 alpha: 0.8,
                 speed: 10,
                 lifetime: 40,

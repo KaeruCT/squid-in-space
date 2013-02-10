@@ -83,7 +83,6 @@ io.sockets.on('connection', function (socket) {
             socket.emit('Connected', {
                 client: newClient
             });
-
         });
     });
 
@@ -101,7 +100,14 @@ io.sockets.on('connection', function (socket) {
         if (client) {
             client.x = data.x;
             client.y = data.y;
+            client.health = data.health;
             client.rotation = data.rotation;
+
+            if (client.health === 0) {
+                socket.emit('ClientDied', {
+                    id: data.clientId
+                });
+            }
         }
     });
 });

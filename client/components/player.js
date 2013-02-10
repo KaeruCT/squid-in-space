@@ -20,21 +20,28 @@ define(["crafty"], function (Crafty) {
     Crafty.c('Player', {
         init: function () {
             var self = this;
-            self.addComponent('2D, Canvas, Color, KeyBoard');
+            self.addComponent('2D, Canvas, Color, KeyBoard, Damageable, Collision');
 
-            self._vel = new Crafty.math.Vector2D(0, 0);
             self._maxspeed = 2;
             self._speed = 0;
             self._cos = 0;
             self._sin = 1;
             self.attr({
+                x: 0,
+                y: 0,
                 w: 16,
                 h: 8,
-                rotation: -90,
                 z: 9999,
                 keysPressed: {},
-                name: ''
+                name: '',
+                _vel: new Crafty.math.Vector2D(0, 0)
             });
+
+            self.origin('middle center');
+            self.color('#FFFFFF');
+
+            self.collision();
+            self.rotation = -90;
 
             self.isKeyPressed = function (keyCode) {
                 return self.keysPressed[keyCode] || false;
@@ -68,6 +75,7 @@ define(["crafty"], function (Crafty) {
                     y: Math.ceil(self.y + self.h/2)-1,
                     w: 2,
                     h: 2,
+                    player: self,
                     vel: new Crafty.math.Vector2D(
                         Math.cos(rad),
                         Math.sin(-rad)
@@ -86,14 +94,10 @@ define(["crafty"], function (Crafty) {
                         Math.cos(-rad),
                         Math.sin(rad)
                     ),
-                    trailcolor: "#FFFFFF",
                     rotation: self.rotation
                 }).
                 color(self.trailcolor);
             };
-
-            self.origin('middle center');
-            self.color('#FFFFFF');
 
             self.bind('EnterFrame', function (e) {
                 var k = Crafty.keys,
@@ -146,6 +150,44 @@ define(["crafty"], function (Crafty) {
                     self.shoot();
                 }
             });
+        }
+    });
+
+    Crafty.c('Damageable', {
+        init: function () {
+            var self = this;
+
+            self.attr({
+                health: 10,
+                maxhealth: 10
+            });
+
+            self.heal = function (val) {
+                if (!val) {
+                    self.health = self.maxhealth;
+                    return;
+                }
+
+                val = Math.abs(val);
+                if (self.health + val <= maxhealth) {
+                    self.health -= val;
+                } else {
+                    self.health = self.maxhealth;
+                }
+            };
+
+            self.damage = function (val) {
+                val = Math.abs(val);
+                if (self.health - val >= 0) {
+                    self.health -= val;
+                } else {
+                    self.health = 0;
+                }
+            };
+
+            self.isDead = function () {
+                return health === 0;
+            };
         }
     });
 });

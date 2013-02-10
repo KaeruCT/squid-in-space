@@ -4,6 +4,7 @@ define(["crafty", "net", "socket.io",
         player: null,
         playerName: null,
         playerId: 0,
+        maxhealth: 20,
         removedPlayers: [],
         defaultstarlifecycle: 1/25,
         stardecay: 1/25,
@@ -100,9 +101,13 @@ define(["crafty", "net", "socket.io",
 
             for(i in data) {
                 p = data[i];
-                html += '<div class="player">' +
-                    '<span class="avatar" style="background: '+p.ship+';"></span>' +
-                    '&nbsp;'+p.name.htmlEntities()+'&nbsp;['+p.x.toFixed(0)+' '+p.y.toFixed(0)+']' +
+                width = p.health / g.maxhealth * 100;
+                html +=
+                    '<div class="player">' +
+                    '   <div class="health" style="width: '+width+'%">' +
+                    '       <span class="avatar" style="background: '+p.ship.htmlEntities()+';"></span>' +
+                    '       &nbsp;'+p.name.htmlEntities()+'&nbsp;['+p.x.toFixed(0)+' '+p.y.toFixed(0)+']' +
+                    '   </div>' +
                     '</div>';
             }
 
@@ -139,7 +144,11 @@ define(["crafty", "net", "socket.io",
             var p = Crafty.e('Player').
             addComponent('Player'+playerData.id).
             color(playerData.ship).
-            attr({trailcolor: playerData.trail});
+            attr({
+                maxhealth: g.maxhealth,
+                health: g.maxhealth,
+                trailcolor: playerData.trail
+            });
 
             g._updatePlayer(p, playerData);
         },
@@ -147,6 +156,17 @@ define(["crafty", "net", "socket.io",
         removePlayer: function (id) {
             Crafty('Player'+id).destroy();
             g.removedPlayers.push(id);
+        },
+
+        killPlayer: function (id) {
+            var p = Crafty('Player'+id);
+            p.attr({
+                x: 0,
+                y: 0,
+                keysPressed: {},
+                _vel: new Crafty.math.Vector2D(0, 0)
+            });
+            p.heal();
         },
 
         updatePlayer: function (playerData) {
@@ -169,8 +189,8 @@ define(["crafty", "net", "socket.io",
         _updatePlayer: function (p, playerData) {
             // shit interpolation for now
             var r = p.rotation + (playerData.rotation - p.rotation)/2,
-                p.x + (playerData.x - p.x)/2,
-                p.y + (playerData.y - p.y)/2;
+                x = p.x + (playerData.x - p.x)/2,
+                y = p.y + (playerData.y - p.y)/2;
 
             p.attr({
                 x: x,
@@ -194,10 +214,11 @@ define(["crafty", "net", "socket.io",
 
             g.playerName = playerName;
 
-            g.player = Crafty.e('ControllablePlayer').
-            attr({
+            g.player = Crafty.e('ControllablePlayer').attr({
                 x: 0,
-                y: 0
+                y: 0,
+                maxhealth: g.maxhealth,
+                health: g.maxhealth
             });
 
             g.player.bind('KeyDown', function (e) {
